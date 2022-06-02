@@ -1,0 +1,41 @@
+mydata <- read.csv("C:\\Users\\jefin\\Downloads\\mldata.csv")
+str(mydata)
+head(mydata)
+
+names(mydata)[1]=("City")
+mydata
+
+#scatter plot
+
+plot(Fuel_Cost~Sales, mydata)
+with(mydata,text(Fuel_Cost~Sales, labels = City, pos = 4, cex = .7))
+
+plot(RoR~Sales, mydata)
+with(mydata,text(RoR~Sales, labels = City, pos = 4, cex = .7))
+
+#normalization
+
+z <- mydata[,-c(1)]
+m <- apply(z,2,mean)
+s <- apply(z,2,sd)
+z <- scale(z,m,s)
+head(z)
+
+#calculate the Euclidean Distance
+
+distance_mat <- dist(z, method = 'euclidean')
+distance_mat
+print(distance_mat, digits=2)
+
+#clustering dendogram
+
+hc.l <- hclust(distance_mat)
+hclust(distance_mat)
+plot(hc.l)
+plot(hc.l, labels= mydata$City, hang =-1)
+
+#clustering dendogram average
+
+hc.l <- hclust(distance_mat, method = "average")
+plot(hc.l, labels= mydata$City, hang =-1)
+
